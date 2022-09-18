@@ -4,6 +4,7 @@ using EmployeeMgmt.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EmployeeMgmt.Migrations
 {
     [DbContext(typeof(EmployeeDbContext))]
-    partial class EmployeeDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220918101754_AddEmployeeMigration")]
+    partial class AddEmployeeMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -40,6 +42,50 @@ namespace EmployeeMgmt.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Employees");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Department = 1,
+                            Email = "mary@gmail.com"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Department = 2,
+                            Email = "john@gmail.com"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Department = 2,
+                            Email = "smith@gmail.com"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Department = 3,
+                            Email = "robert@gmail.com"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Department = 3,
+                            Email = "oliver@gmail.com"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Department = 2,
+                            Email = "ann@gmail.com"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Department = 2,
+                            Email = "kriz@gmail.com"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -71,15 +117,15 @@ namespace EmployeeMgmt.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "b0354acd-9219-4621-ba32-282db259c081",
-                            ConcurrencyStamp = "79936d09-4a72-4d7c-ba00-215bea9c3fc3",
+                            Id = "36ec24ed-29bc-4787-ac4b-424b06fb1001",
+                            ConcurrencyStamp = "7d2f0361-2300-4171-af18-e8f4c74cf1da",
                             Name = "Admin",
                             NormalizedName = "Admin"
                         },
                         new
                         {
-                            Id = "ccce14b5-123c-4166-981c-21e23aaef4c2",
-                            ConcurrencyStamp = "cae8c658-f15d-4bb1-865a-4732023af8c8",
+                            Id = "16581259-fc9c-4436-8a2a-f4a8ed2a8d92",
+                            ConcurrencyStamp = "a577853d-58da-459d-9201-98fef069316f",
                             Name = "Employee",
                             NormalizedName = "Employee"
                         });
@@ -173,23 +219,6 @@ namespace EmployeeMgmt.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "330ff8fa-a471-4bf7-8011-21bab7a7a23b",
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "2ba76095-4478-4f90-a4ae-792a52016fdc",
-                            Email = "admin@admincontrol.com",
-                            EmailConfirmed = false,
-                            LockoutEnabled = false,
-                            NormalizedUserName = "admin@admincontrol.com",
-                            PasswordHash = "AQAAAAEAACcQAAAAEM/NjwfXDecizSl2m+X1i5/EwEoslbHI1znUZCr1oPfNyxW9II5BwnuysqtnldCatg==",
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "9f73144e-252c-46a5-8dc9-9c3df61264bd",
-                            TwoFactorEnabled = false,
-                            UserName = "admin@admincontrol.com"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -252,13 +281,6 @@ namespace EmployeeMgmt.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            UserId = "330ff8fa-a471-4bf7-8011-21bab7a7a23b",
-                            RoleId = "b0354acd-9219-4621-ba32-282db259c081"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>

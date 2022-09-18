@@ -1,4 +1,5 @@
-﻿using EmployeeMgmt.DTO;
+﻿using EmployeeMgmt.Domain;
+using EmployeeMgmt.DTO;
 using EmployeeMgmt.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -14,19 +15,23 @@ namespace EmployeeMgmt.Controller
     {
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IServiceMethod _serviceMethod;
 
         public AccountController(UserManager<IdentityUser> userManager,
             SignInManager<IdentityUser> signInManager,
+            RoleManager<IdentityRole> roleManager,
             IServiceMethod serviceMethod)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _serviceMethod = serviceMethod;
+            _roleManager = roleManager;
         }
 
         [HttpPost("Register")]
-        [AllowAnonymous]
+        [Authorize(Roles = "Admin")]
+        //[Authorize]
         public async Task<IActionResult> Register(RegisterDto registerDto)
         {
             try
@@ -37,16 +42,20 @@ namespace EmployeeMgmt.Controller
                     Email = registerDto.Email,
                 };
 
+
+
                 var result = await _userManager.CreateAsync(user, registerDto.Password);
 
                 if (!result.Succeeded)
                     return BadRequest(new RegisterResponseDto
                     {
-                        Message = "Registration Unsuccessful.",
+                        Message = $"Registration Unsuccessful.{result.Errors.First().Description}",
                         Success = false
                     });
 
-
+                // add only employee users
+                result = await _userManager.AddToRoleAsync(user,
+                    _roleManager.Roles.ToList().Single(c => c.Name == Role.Employee.ToString()).Name);
 
                 return Ok(new RegisterResponseDto
                 {
@@ -75,9 +84,6 @@ namespace EmployeeMgmt.Controller
 
             try
             {
-                var user = await _userManager.FindByEmailAsync(loginDto.Email);
-
-
 
                 var result = await _signInManager.PasswordSignInAsync(loginDto.Email, loginDto.Password, false, false);
 
@@ -108,6 +114,6 @@ namespace EmployeeMgmt.Controller
             }
         }
 
-        
+
     }
 }
